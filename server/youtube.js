@@ -18,7 +18,7 @@ const getYoutube = function() {
 const saveYoutubeData = function(error, response){
     response['service'] = 'youtube';
     for (item of response.data.items){
-        Lifestreams.insert(item);
+        Lifestreams.upsert({etag:item.etag},item);
     };
 };
 
