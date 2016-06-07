@@ -15,9 +15,14 @@ const getYoutube = function() {
     )
 };
 
+const summaryHTML = function(ytItem){
+    return `uploaded <a href=https://www.youtube.com/watch?v=${ytItem.snippet.resourceId.videoId}>${ytItem.snippet.title}</a>`};
+
 const saveYoutubeData = function(error, response){
-    response['service'] = 'youtube';
     for (item of response.data.items){
+        item['service'] = 'youtube';
+        item['summaryHTML'] = summaryHTML(item);
+        item['timestamp'] = item.snippet.publishedAt;
         Lifestreams.upsert({etag:item.etag},item);
     };
 };
