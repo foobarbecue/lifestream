@@ -4,7 +4,6 @@ import { HTTP } from 'meteor/http';
 const api_access_info = JSON.parse(Assets.getText('api_access_info.json'));
 
 const getYoutube = function() {
-    console.log('stuff');
     HTTP.get("https://www.googleapis.com/youtube/v3/playlistItems",
         {params:{
             part: "snippet",
