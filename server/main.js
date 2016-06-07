@@ -3,8 +3,10 @@
  */
 import getYoutube from './youtube.js';
 import getGithub from './github.js';
+import getStackexchange from './stackexchange.js';
 
 Meteor.methods({
     getYoutube: getYoutube,
-    getGithub: getGithub
+    getGithub: getGithub,
+    getStackexchange: getStackexchange
 });
