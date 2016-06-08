@@ -2,4 +2,10 @@
 {{> lifestream}}
 </body>
 <template name="lifestream">
+    <svg class="lifestream"></svg>
+    {{#if Template.subscriptionsReady}}
+        {{drawLifestream}}
+    {{else}}
+        Loading...
+    {{/if}}
 </template>

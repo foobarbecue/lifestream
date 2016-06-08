@@ -1,4 +1,4 @@
-import './collections.js';
+import '../collections.js';
 import { HTTP } from 'meteor/http';
 
 const api_access_info = JSON.parse(Assets.getText('api_access_info.json'));
@@ -18,7 +18,7 @@ const getStackexchange = function() {
         );
         for (item of response.data.items) {
             if (item.post_id) { //medals and privileges and such don't have post_ids, just forget them
-                item['service'] = 'Stackexchange';
+                item['service'] = 'stackexchange';
                 item['summaryHTML'] = summaryHTML(item);
                 item['timestamp'] = new Date(item.creation_date*1000);
                 Lifestreams.upsert({post_id: item.post_id}, item);

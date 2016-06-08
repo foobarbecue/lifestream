@@ -1,4 +1,4 @@
-import './collections.js';
+import '../collections.js';
 import { HTTP } from 'meteor/http';
 
 const api_access_info = JSON.parse(Assets.getText('api_access_info.json'));
