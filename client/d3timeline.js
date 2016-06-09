@@ -18,9 +18,10 @@ const drawLifestream = function(){
      * Only runs when new data becomes available
      */
     let render = function(){
-        console.log('render')
         // Draw lifestream events
         d3.select('svg.lifestream')
+            .attr("viewBox","0 -1000 100 1000")
+            .attr("preserveAspectRatio","xMaxYMin")
             .selectAll("g.lane")
             .data(lstrmData)
             .enter()
@@ -33,7 +34,7 @@ const drawLifestream = function(){
             .append("circle")
             .attr("class","lifestreamEvt")
             .attr("r", 4)
-            .attr("cx", 10)
+            .attr("cx", 10);
 
         // Draw the time axis (y)
         d3.selectAll('svg.lifestream')
@@ -41,15 +42,19 @@ const drawLifestream = function(){
             .data([1]) //Makes sure there will always be exactly one y-axis
             .enter()
             .append("g")
-            .attr("class", "axis")
+            .attr("class", "axis");
 
         // Draw the service name labels (x)
         d3.selectAll('g.lane')
             .selectAll("text")
-            .data(function(d,i){console.log(d); return [d]})
+            .data((d)=>[d])
             .enter()
             .append("text")
             .text((d)=>d._id)
+            .attr("text-anchor","end")
+            .attr("transform","translate(14,-145)rotate(-90)")
+            .attr("class","axis")
+            .style("font-variant","small-caps");
     };
     // Setup
     const endDate = new Date();
@@ -57,11 +62,11 @@ const drawLifestream = function(){
     startDate.setMonth(endDate.getMonth()-1);
     let lstrmData = Lifestreams.find().fetch();
     let tscale = d3.time.scale()
-        .range([0, 1000])
+        .range([-150, -1000])
         .domain([startDate, endDate]);
     let ax = d3.svg.axis()
         .scale(tscale)
-        .orient("right")
+        .orient("right");
         // .ticks(d3.time.week)
         // .tickFormat(d3.time.format("%Y-%m-%d"));
     let panZoom = d3.behavior.zoom()
