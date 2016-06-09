@@ -1,7 +1,7 @@
 import '../collections.js';
 import { HTTP } from 'meteor/http';
 
-const api_access_info = JSON.parse(Assets.getText('api_access_info.json'));
+const config = JSON.parse(Assets.getText('lifestream_config.json')).services.stackexchange;
 
 const getStackexchange = function() {
     //I ended up making this synchronous rather than async b/c weird problems with more_pages. TODO investigate
@@ -9,7 +9,7 @@ const getStackexchange = function() {
     let page=1;
     while (more_pages==true){
         //TODO look into using ETag header
-         var response = HTTP.get(`http://api.stackexchange.com/2.2/users/${api_access_info.stackexchange.user_id}/network-activity`,
+         var response = HTTP.get(`http://api.stackexchange.com/2.2/users/${config.user_id}/network-activity`,
             {
                 headers: {"User-Agent": "Meteor/1.3"},
                 params: {"page":page},

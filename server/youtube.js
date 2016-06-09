@@ -1,23 +1,32 @@
 import '../collections.js';
 import { HTTP } from 'meteor/http';
 
-const api_access_info = JSON.parse(Assets.getText('api_access_info.json'));
+const config = JSON.parse(Assets.getText('lifestream_config.json')).services.youtube;
 
 const getYoutube = function() {
-    HTTP.get("https://www.googleapis.com/youtube/v3/playlistItems",
-        {params:{
-            part: "snippet",
-            key: api_access_info.youtube.api_key,
-            playlistId: api_access_info.youtube.playlistId
-        }},
-        saveYoutubeData
-    )
+    let pageToken='';
+    while(pageToken || pageToken=='') {
+        let response = HTTP.get("https://www.googleapis.com/youtube/v3/playlistItems",
+            {
+                params: {
+                    part: "snippet",
+                    key: config.api_key,
+                    playlistId: config.playlistId,
+                    pageToken: pageToken,
+                    maxResults: 50 //This is the most you're allowed to request
+                }
+            },
+        );
+        pageToken = response.data.nextPageToken;
+        console.log(pageToken);
+        saveYoutubeData(response);
+    };
 };
 
 const summaryHTML = function(ytItem){
     return `uploaded <a href=https://www.youtube.com/watch?v=${ytItem.snippet.resourceId.videoId}>${ytItem.snippet.title}</a>`};
 
-const saveYoutubeData = function(error, response){
+const saveYoutubeData = function(response){
     for (item of response.data.items){
         item['service'] = 'youtube';
         item['summaryHTML'] = summaryHTML(item);

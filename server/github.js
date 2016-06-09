@@ -1,14 +1,14 @@
 import '../collections.js';
 import { HTTP } from 'meteor/http';
 
-const api_access_info = JSON.parse(Assets.getText('api_access_info.json'));
+const config = JSON.parse(Assets.getText('lifestream_config.json')).services.github;
 
 const getGithub = function() {
     //Unfortunately the github API only allows querying the last 90 days or 300 events, whichever comes first
     //Ask for 10 pages at 30 items per page (30pp is not changeable)
     for (page of [...Array(10).keys()]) {
         //TODO look into using ETag header
-        HTTP.get("https://api.github.com/users/foobarbecue/events",
+        HTTP.get(`https://api.github.com/users/${config.user}/events`,
             {
                 headers: {"User-Agent": "Meteor/1.3"},
                 params: {"page":page+1}
