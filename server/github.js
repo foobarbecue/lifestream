@@ -32,7 +32,7 @@ const saveGithubData = function(error, response){
         for (item of response.data) {
             item['service'] = 'github';
             item['summaryHTML'] = summaryHTML(item);
-            item['timestamp'] = item.created_at;
+            item['timestamp'] = new Date(item.created_at);
             Lifestreams.upsert({id: item.id}, item);
         }
 };

@@ -12,15 +12,20 @@ const drawLifestream = function(){
     const tscale = d3.time.scale()
         .range([-150, -1000])
         .domain([startDate, endDate]);
+
     d3.select('svg.lifestream')
-        .selectAll("circle")
+        .selectAll("g")
         .data(lstrmData)
+        .enter()
+        .append("g")
+        .attr("transform",(d,i)=>`translate(${i*10},0)`)
+      .selectAll("circle")
+        .data((d, i)=>d.items) // d is lstrm[i]
         .enter()
         .append("circle")
         .attr("r",4)
         .attr("cx",10)
         .attr("cy",(d)=>tscale(d.timestamp));
-    // d3.selectAll('g.feed circle').attr("cy", getYPos);
 };
 
 Template.lifestream.helpers({

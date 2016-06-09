@@ -21,7 +21,7 @@ const saveYoutubeData = function(error, response){
     for (item of response.data.items){
         item['service'] = 'youtube';
         item['summaryHTML'] = summaryHTML(item);
-        item['timestamp'] = item.snippet.publishedAt;
+        item['timestamp'] = new Date(item.snippet.publishedAt);
         Lifestreams.upsert({etag:item.etag},item);
     };
 };
