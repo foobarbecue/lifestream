@@ -5,13 +5,21 @@ import Lifestreams from '../collections.js'
 Meteor.subscribe("lifestreams");
 
 const drawLifestream = function(){
+    /**
+     * Runs on first render and then on zoom / pan events
+     */
     let updateAxes = function(){
         d3.selectAll('.lifestreamEvt')
             .attr("cy", (d)=>tscale(d.timestamp));
         d3.selectAll('g.axis').call(ax);
     };
 
+    /**
+     * Only runs when new data becomes available
+     */
     let render = function(){
+        console.log('render')
+        // Draw lifestream events
         d3.select('svg.lifestream')
             .selectAll("g.lane")
             .data(lstrmData)
@@ -26,15 +34,22 @@ const drawLifestream = function(){
             .attr("class","lifestreamEvt")
             .attr("r", 4)
             .attr("cx", 10)
-            .attr("cy", (d)=>tscale(d.timestamp));
 
+        // Draw the time axis (y)
         d3.selectAll('svg.lifestream')
             .selectAll('g.axis')
-            .data([1])
+            .data([1]) //Makes sure there will always be exactly one y-axis
             .enter()
             .append("g")
             .attr("class", "axis")
-            .call(ax)
+
+        // Draw the service name labels (x)
+        d3.selectAll('g.lane')
+            .selectAll("text")
+            .data(function(d,i){console.log(d); return [d]})
+            .enter()
+            .append("text")
+            .text((d)=>d._id)
     };
     // Setup
     const endDate = new Date();
@@ -55,6 +70,7 @@ const drawLifestream = function(){
     d3.select('svg.lifestream')
         .call(panZoom);
     render();
+    updateAxes();
 };
 
 Template.lifestream.helpers({
