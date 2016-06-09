@@ -15,9 +15,9 @@
     g.axis line{
       stroke: black;
     }
-    .axis{
-      display: none;
-    }
+    /*.axis{*/
+      /*display: none;*/
+    /*}*/
     div.ttp{
       border: thin black solid;
       background: lightgrey;
