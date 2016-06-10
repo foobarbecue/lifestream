@@ -18,7 +18,6 @@ const getYoutube = function() {
             },
         );
         pageToken = response.data.nextPageToken;
-        console.log(pageToken);
         saveYoutubeData(response);
     };
 };

@@ -5,10 +5,23 @@ import getYoutube from './youtube.js';
 import getGithub from './github.js';
 import getStackexchange from './stackexchange.js';
 
+const config = JSON.parse(Assets.getText('lifestream_config.json'));
+
 // TODO make this more systematic and less hard-coded. Classes?
 Meteor.methods({
-    getYoutube: getYoutube,
-    getGithub: getGithub,
-    getStackexchange: getStackexchange
+    get_youtube: getYoutube,
+    get_github: getGithub,
+    get_stackexchange: getStackexchange
 });
 
+SyncedCron.add({
+    name: 'Request all lifestreams',
+    schedule: (parser) => parser.text('every 1 hour'),
+    job: () => {
+        for (service of Object.keys(config.services)){
+            Meteor.call('get_' + service)
+        }
+    }
+});
+
+SyncedCron.start();
