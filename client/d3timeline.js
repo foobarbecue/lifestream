@@ -20,7 +20,7 @@ const drawLifestream = function(){
     let render = function(){
         // Add clip-path to hide events that are outside of axes
         d3.selectAll('svg.lifestream')
-            .selectAll('defs')
+            .selectAll('clipPath')
             .data([1]) //Makes sure there will always be exactly one
             .enter()
             .append("clipPath")
@@ -38,12 +38,12 @@ const drawLifestream = function(){
             .append("g")
             .attr("transform", (d, i)=>`translate(${i * 10},0)`)
             .attr("class", "lane")
-            .attr("clip-path","url(#lstrm-clip)")
             .selectAll("circle")
             .data((d, i)=>d.items) // d is lstrm[i]
             .enter()
             .append("circle")
             .attr("class","lifestreamEvt")
+            .attr("clip-path","url(#lstrm-clip)")
             .attr("r", 4)
             .attr("cx", 10);
 
