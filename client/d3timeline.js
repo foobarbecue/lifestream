@@ -1,7 +1,7 @@
 /**
  * Created by aaron on 6/6/16.
  */
-import Lifestreams from '../collections.js'
+import Lifestreams from '../collections.js';
 Meteor.subscribe("lifestreams");
 
 const drawLifestream = function(){
