@@ -1,10 +1,10 @@
-# Setup
+# A modular system for collecting and displaying web activity streams
 
-Add a file `appdir/private/lifestream_config.json` where appdir is the directory of the app in which you will use lifestream.
+At the moment there are two packages:
+ - [foobarbecue:lifestream-server](`http://github.com/foobarbecue/lifestream/packages/lifestream-server/README.md), which scoops up public social streams from services like Youtube, Github, and Stackexchange.
+ - [foobarbecue:lifestream-timeline](`http://github.com/foobarbecue/lifestream/packages/lifestream-timeline/README.md), which displays data from the lifestream server on a zoomable timeline in the browser.
 
-Fill out that file similar to the the example in `examples/lifestream_config.json`. You may need to get api keys for some of the services.
-
-Run `meteor add foobarbecue` in your app directory.
+Instructions for each are in README.md in the package root directory.
 
 # Inspired by jquery-lifestream
 When I first wanted to display my online activity, I used [excellent jquery plugin](https://github.com/christianvuerings/jquery-lifestream) by christianvuerings. Eventually I realized it wasn't what I needed. jquery-lifestream queries APIs from the client and loads them directly into the browser. For most of the services it used the Yahoo Query Language system. For some of the other services it [used weird personal web apps, some of which are defunct.](https://github.com/christianvuerings/jquery-lifestream/pull/206)
