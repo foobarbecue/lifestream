@@ -1,3 +1,5 @@
+This package is part of [Lifestream](https://github.com/foobarbecue/lifestream).
+
 # Setup
 
 If you want a server for the timeline to load data from, follow the instructions for [the instructions for lifestream-server](http://github.com/foobarbecue/lifestream/tree/master/packages/lifestream-server/README.md). You can ignore the part where it tells you to run `meteor add foobarbecue:lifestream-server`, because it will be added as a dependancy when you add lifestream-timeline.

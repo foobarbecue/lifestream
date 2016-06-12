@@ -1,0 +1,12 @@
+{"lifestream":{
+  "services": {
+    "github": {
+      "user": "foobarbecue"
+    },
+    "stackexchange": {
+      "user_id": 306152
+    }
+
+  }
+}
+}

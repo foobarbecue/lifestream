@@ -2,6 +2,8 @@
  * Created by aaron on 6/6/16.
  */
 import { Template } from 'meteor/templating';
+import './timeline.css';
+import './timeline.html';
 Lifestreams = new Mongo.Collection('lifestreams');
 Meteor.subscribe("lifestreams");
 var drawLifestream = function(){
