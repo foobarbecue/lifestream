@@ -31,8 +31,6 @@ var drawLifestream = function(){
             .attr({y:-1000, width:100, height:850});
 
         // Draw lifestream events
-        console.log('drawing events');
-        console.log(lstrmData);
         d3.select('svg.lifestream')
             .attr("viewBox","0 -1000 100 1000")
             .attr("preserveAspectRatio","xMaxYMin")
@@ -70,8 +68,41 @@ var drawLifestream = function(){
             .attr("transform","translate(14,-145)rotate(-90)")
             .attr("class","axis")
             .style("font-variant","small-caps");
+
+        // Draw the tooltip
+        d3.selectAll('svg.lifestream')
+            .selectAll('div')
+            .data([1])
+            .append("div") //Makes sure there will always be exactly one tooltip div
+            .style("position", "absolute")
+            .style("z-index", "10")
+            .attr("class","ttp")
+
+        // Mouseovers setup
+        let tooltipEl = d3.select("div.ttp");
+        d3.selectAll(".lifestreamEvt")
+            .on("mouseenter",
+                function(d){
+                    tooltipEl.html(d.summaryHTML);
+                    $(".axis").show();
+                    $(".ttp").show();
+                    tooltipEl
+                        .style("top",d3.event.y + "px")
+                        .style("right",window.innerWidth - d3.event.x + "px");
+                });
+        tooltipEl
+            .on("mouseenter", function(){
+                tooltipEl.transition().duration(0);
+                tooltipEl.style('display','block')
+            })
+            .on("mouseleave", function(){
+                tooltipEl.style('display','none');
+                tooltipEl.html('');
+            });
+
+
     };
-    // Setup
+    // Scales etc. setup
     const endDate = new Date();
     let startDate = new Date();
     startDate.setMonth(endDate.getMonth() - 1);
@@ -82,13 +113,23 @@ var drawLifestream = function(){
     let ax = d3.svg.axis()
         .scale(tscale)
         .orient("right");
-    // .ticks(d3.time.week)
-    // .tickFormat(d3.time.format("%Y-%m-%d"));
     let panZoom = d3.behavior.zoom()
         .y(tscale)
         .on("zoom", updateAxes);
+
     d3.select('svg.lifestream')
         .call(panZoom);
+
+    // Show the axis when mouse goes over the lifestream
+    // lstrmEl.on("mouseenter",
+    //     function() {
+    //         $(".axis").fadeIn()
+    //     });
+    // lstrmEl.on("mouseleave",
+    //     function() {
+    //         $(".axis").hide();
+    //         tooltipEl.transition().delay(500).style('display','none');
+    //     });
 
     render();
     updateAxes();
