@@ -16,7 +16,7 @@ Meteor.methods({
 
 SyncedCron.add({
     name: 'Request all lifestreams',
-    schedule: (parser) => parser.text('every 1 minute'),
+    schedule: (parser) => parser.text(config.interval),
     job: () => {
         for (service of Object.keys(config.services)){
             Meteor.call('get_' + service)

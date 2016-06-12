@@ -6,4 +6,4 @@ If you want a server for the timeline to load data from, follow the instructions
 
 Run `meteor add foobarbecue:lifestream-timeline` in your app directory.
 
-Add `{{> lifestream}}` to a blaze template where you would like the timeline to be displayed.
+Add `{{> lifestream-timeline}}` to a blaze template where you would like the timeline to be displayed.
