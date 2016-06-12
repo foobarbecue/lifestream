@@ -1,7 +1,7 @@
-import '../collections.js';
+import { Lifestreams } from '../collections.js';
 import { HTTP } from 'meteor/http';
 
-const config = JSON.parse(Assets.getText('lifestream_config.json')).services.youtube;
+const config = Meteor.settings.lifestream.services.youtube;
 
 const getYoutube = function() {
     let pageToken='';
@@ -19,7 +19,7 @@ const getYoutube = function() {
         );
         pageToken = response.data.nextPageToken;
         saveYoutubeData(response);
-    };
+    }
 };
 
 const summaryHTML = function(ytItem){
@@ -31,7 +31,7 @@ const saveYoutubeData = function(response){
         item['summaryHTML'] = summaryHTML(item);
         item['timestamp'] = new Date(item.snippet.publishedAt);
         Lifestreams.upsert({etag:item.etag},item);
-    };
+    }
 };
 
 export default getYoutube;

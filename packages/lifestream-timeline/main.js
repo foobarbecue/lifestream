@@ -1,14 +1,14 @@
 /**
  * Created by aaron on 6/6/16.
  */
-import Lifestreams from '../collections.js';
+import { Template } from 'meteor/templating';
+Lifestreams = new Mongo.Collection('lifestreams');
 Meteor.subscribe("lifestreams");
-
-const drawLifestream = function(){
+var drawLifestream = function(){
     /**
      * Runs on first render and then on zoom / pan events
      */
-    let updateAxes = function(){
+    var updateAxes = function(){
         d3.selectAll('.lifestreamEvt')
             .attr("cy", (d)=>tscale(d.timestamp));
         d3.selectAll('g.axis').call(ax);
@@ -17,7 +17,7 @@ const drawLifestream = function(){
     /**
      * Only runs when new data becomes available
      */
-    let render = function(){
+    var render = function(){
         // Add clip-path to hide events that are outside of axes
         d3.selectAll('svg.lifestream')
             .selectAll('clipPath')
@@ -29,6 +29,8 @@ const drawLifestream = function(){
             .attr({y:-1000, width:100, height:850});
 
         // Draw lifestream events
+        console.log('drawing events');
+        console.log(lstrmData);
         d3.select('svg.lifestream')
             .attr("viewBox","0 -1000 100 1000")
             .attr("preserveAspectRatio","xMaxYMin")
@@ -90,6 +92,4 @@ const drawLifestream = function(){
     updateAxes();
 };
 
-Template.lifestream.helpers({
-    drawLifestream:drawLifestream
-});
+Template.registerHelper('drawLifestream',drawLifestream);

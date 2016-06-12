@@ -1,7 +1,7 @@
-import '../collections.js';
+import { Lifestreams } from '../collections.js';
 import { HTTP } from 'meteor/http';
 
-const config = JSON.parse(Assets.getText('lifestream_config.json')).services.github;
+const config = Meteor.settings.lifestream.services.github;
 
 const getGithub = function() {
     //Unfortunately the github API only allows querying the last 90 days or 300 events, whichever comes first
@@ -23,7 +23,7 @@ const summaryHTML = function(item){
         case "PushEvent":
             return `pushed ${item.payload.commits.length} commit(s) to <a href=${item.repo.url}>${item.repo.name}</a>`;
         case "CreateEvent":
-            return `created repository <a href=${item.repo.url}>${item.repo.name}</a>`
+            return `created repository <a href=${item.repo.url}>${item.repo.name}</a>`;
         //TODO handle other event types e.g. issues
     }
 };

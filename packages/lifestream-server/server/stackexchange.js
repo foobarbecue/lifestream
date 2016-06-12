@@ -1,7 +1,7 @@
-import '../collections.js';
+import { Lifestreams } from '../collections.js';
 import { HTTP } from 'meteor/http';
 
-const config = JSON.parse(Assets.getText('lifestream_config.json')).services.stackexchange;
+const config = Meteor.settings.lifestream.services.stackexchange;
 
 const getStackexchange = function() {
     //I ended up making this synchronous rather than async b/c weird problems with more_pages. TODO investigate

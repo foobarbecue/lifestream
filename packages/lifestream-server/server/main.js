@@ -4,8 +4,8 @@
 import getYoutube from './youtube.js';
 import getGithub from './github.js';
 import getStackexchange from './stackexchange.js';
-
-const config = JSON.parse(Assets.getText('lifestream_config.json'));
+import './publications.js';
+const config = Meteor.settings.lifestream;
 
 // TODO make this more systematic and less hard-coded. Classes?
 Meteor.methods({
