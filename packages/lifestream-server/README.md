@@ -6,4 +6,4 @@ Fill out that file similar to the the example at `http://github.com/foobarbecue/
 
 Run `meteor add foobarbecue:lifestream-server` in your app directory.
 
-If you want a timeline displayed in the browser, follow [the instructions for lifestream-timeline](`http://github.com/foobarbecue/lifestream/packages/lifestream-timeline/README.md).
+If you want a timeline displayed in the browser, follow [the instructions for lifestream-timeline](`http://github.com/foobarbecue/lifestream/tree/master/packages/lifestream-timeline/README.md).

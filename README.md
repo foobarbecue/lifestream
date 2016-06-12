@@ -1,8 +1,8 @@
 # A modular system for collecting and displaying web activity streams
 
 At the moment this repository contains two packages:
- - [foobarbecue:lifestream-server](http://github.com/foobarbecue/lifestream/packages/lifestream-server/README.md), which scoops up public social streams from services like Youtube, Github, and Stackexchange.
- - [foobarbecue:lifestream-timeline](http://github.com/foobarbecue/lifestream/packages/lifestream-timeline/README.md), which displays data from the lifestream server on a zoomable timeline in the browser.
+ - [foobarbecue:lifestream-server](http://github.com/foobarbecue/lifestream/tree/master/packages/lifestream-server/README.md), which scoops up public social streams from services like Youtube, Github, and Stackexchange.
+ - [foobarbecue:lifestream-timeline](http://github.com/foobarbecue/lifestream/tree/master/packages/lifestream-timeline/README.md), which displays data from the lifestream server on a zoomable timeline in the browser.
 
 Instructions for each are in README.md in each package root directory.
 
