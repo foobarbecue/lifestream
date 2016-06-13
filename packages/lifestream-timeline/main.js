@@ -122,15 +122,26 @@ var drawLifestream = function(){
         .call(panZoom);
 
     // Show the axis when mouse goes over the lifestream
-    // lstrmEl.on("mouseenter",
-    //     function() {
-    //         $(".axis").fadeIn()
-    //     });
-    // lstrmEl.on("mouseleave",
-    //     function() {
-    //         $(".axis").hide();
-    //         tooltipEl.transition().delay(500).style('display','none');
-    //     });
+    try {
+        if (!!Meteor.settings.public.lifestream.timeline_axisfade) {
+            d3.select('svg.lifestream')
+                .on("mouseenter",
+                    function () {
+                        $(".axis").fadeIn()
+                    });
+            d3.select('svg.lifestream')
+                .on("mouseleave",
+                    function () {
+                        $(".axis").hide();
+                        d3.select("div.ttp").transition().delay(500).style('display', 'none');
+                    });
+        }
+    }
+    catch (error){
+        if (error.name !== 'TypeError'){
+            throw error
+        }
+    };
 
     render();
     updateAxes();

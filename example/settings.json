@@ -1,12 +1,13 @@
 {
-  "lifestream":{
-  "services": {
-    "github": {
-      "user": "foobarbecue"
+  "lifestream": {
+    "services": {
+      "github": {
+        "user": "foobarbecue"
+      },
+      "stackexchange": {
+        "user_id": 306152
+      },
     },
-    "stackexchange": {
-      "user_id": 306152
-    }
-  },     "interval": "every hour"
-}
+    "interval": "every hour"
+  }
 }
