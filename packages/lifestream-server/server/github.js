@@ -21,9 +21,15 @@ const getGithub = function() {
 const summaryHTML = function(item){
     switch (item.type){
         case "PushEvent":
-            return `pushed ${item.payload.commits.length} commit(s) to <a href=${item.repo.url}>${item.repo.name}</a>`;
+            return `pushed ${item.payload.commits.length} 
+                    commit(s)
+                    to <a href=${item.repo.url}>${item.repo.name}</a>`;
         case "CreateEvent":
             return `created repository <a href=${item.repo.url}>${item.repo.name}</a>`;
+        case "IssueCommentEvent":
+            return `<a href=${item.payload.comment.html_url}>commented</a> on an issue in <a href="${item.repo.url}">${item.repo.name}</a>`;
+        case "IssuesEvent":
+            return `${item.payload.action} an <a href=${item.payload.issue.url}>issue</a> in <a href=${item.repo.url}>${item.repo.name}</a>`;
         //TODO handle other event types e.g. issues
     }
 };
