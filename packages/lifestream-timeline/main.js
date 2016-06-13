@@ -70,13 +70,14 @@ var drawLifestream = function(){
             .style("font-variant","small-caps");
 
         // Draw the tooltip
-        d3.selectAll('svg.lifestream')
-            .selectAll('div')
+        d3.select('body')
+            .selectAll('div.ttp')
             .data([1])
+            .enter()
             .append("div") //Makes sure there will always be exactly one tooltip div
             .style("position", "absolute")
             .style("z-index", "10")
-            .attr("class","ttp")
+            .attr("class","ttp");
 
         // Mouseovers setup
         let tooltipEl = d3.select("div.ttp");
