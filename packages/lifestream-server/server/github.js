@@ -23,13 +23,15 @@ const summaryHTML = function(item){
         case "PushEvent":
             return `pushed ${item.payload.commits.length} 
                     commit(s)
-                    to <a href=${item.repo.url}>${item.repo.name}</a>`;
+                    to <a href=https://github.com/${item.repo.name}>${item.repo.name}</a>`;
         case "CreateEvent":
-            return `created repository <a href=${item.repo.url}>${item.repo.name}</a>`;
+            return `created repository <a href=https://github.com/${item.repo.name}>${item.repo.name}</a>`;
         case "IssueCommentEvent":
-            return `<a href=${item.payload.comment.html_url}>commented</a> on an issue in <a href="${item.repo.url}">${item.repo.name}</a>`;
+            return `<a href=${item.payload.comment.html_url}>commented</a> on an issue in ${item.repo.name}`;
         case "IssuesEvent":
-            return `${item.payload.action} an <a href=${item.payload.issue.url}>issue</a> in <a href=${item.repo.url}>${item.repo.name}</a>`;
+            return `${item.payload.action} an <a href=${item.payload.issue.html_url}>issue</a> in ${item.repo.name}`;
+        case "PullRequestEvent":
+            return `${item.payload.action} a <a href=${item.payload.pull_request.html_url}>pull request</a> in <a href=https://github.com/${item.repo.name}>${item.repo.name}</a>`;
         //TODO handle other event types e.g. issues
     }
 };
