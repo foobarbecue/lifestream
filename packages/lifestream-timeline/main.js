@@ -11,8 +11,16 @@ var drawLifestream = function(){
      * Runs on first render and then on zoom / pan events
      */
     var updateAxes = function(){
-        d3.selectAll('.lifestreamEvt')
+        d3.selectAll('circle.lifestreamEvt')
             .attr("cy", (d)=>tscale(d.timestamp));
+        d3.selectAll('line.duration')
+            .filter((d)=>!!d.timestamp_end)
+            .attr({
+                x1:10,
+                y1:(d)=>tscale(d.timestamp),
+                x2:10,
+                y2:(d)=>tscale(d.timestamp_end)})
+            .attr("display","block");
         d3.selectAll('g.axis').call(ax);
     };
 
@@ -30,25 +38,34 @@ var drawLifestream = function(){
             .append("rect")
             .attr({y:-1000, width:100, height:850});
 
-        // Draw lifestream events
-        d3.select('svg.lifestream')
+        // Draw lifestream events that have no duration
+        let newEvts = d3.select('svg.lifestream')
             .attr("viewBox","0 -1000 100 1000")
             .attr("preserveAspectRatio","xMaxYMin")
             .selectAll("g.lane")
-            .data(lstrmData)
+            .data(eventData,(d)=>d._id) //use service as the key for data join
             .enter()
             .append("g")
             .attr("transform", (d, i)=>`translate(${i * 10},0)`)
             .attr("class", "lane")
             .selectAll("circle")
-            .data((d, i)=>d.items) // d is lstrm[i]
-            .enter()
+            .data((d)=>d.items) // d is eventData[i]
+            .enter();
+
+        newEvts
             .append("circle")
             .attr("class","lifestreamEvt")
             .attr("clip-path","url(#lstrm-clip)")
             .attr("r", 4)
-            .attr("cx", 10);
+            .attr("cx", 10); //TODO what's with this? Seems like it should be 0.
 
+        newEvts
+            .append("line") // TODO should only be adding for events that have timestamp_end
+            .attr({
+                "class":"duration",
+                "display":"none",
+                "clip-path":"url(#lstrm-clip)"
+            });
         // Draw the time axis (y)
         d3.selectAll('svg.lifestream')
             .selectAll('g.axis')
@@ -107,7 +124,7 @@ var drawLifestream = function(){
     const endDate = new Date();
     let startDate = new Date();
     startDate.setMonth(endDate.getMonth() - 1);
-    let lstrmData = Lifestreams.find().fetch();
+    let eventData = Lifestreams.find().fetch();
     let tscale = d3.time.scale()
         .range([-150, -1000])
         .domain([startDate, endDate]);

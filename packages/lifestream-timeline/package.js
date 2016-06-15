@@ -14,7 +14,7 @@ Package.onUse(function(api) {
   api.versionsFrom('1.3.2.4');
   api.use('ecmascript');
   api.use('foobarbecue:lifestream-server@0.1.7');
-  api.use('jcbernack:reactive-aggregate@0.5.0');
+  api.use('jcbernack:reactive-aggregate@0.6.0');
   api.use('mongo');
   api.use('templating');
   api.use('d3js:d3@3.5.5','client');
