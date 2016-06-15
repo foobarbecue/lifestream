@@ -14,8 +14,8 @@ Package.onUse(function(api) {
   api.versionsFrom('1.3.2.4');
   api.use('ecmascript');
   api.use('http');
-  api.use('percolate:synced-cron@1.1.1');
-  api.use('jcbernack:reactive-aggregate@0.5.0');
+  api.use('percolate:synced-cron@1.3.2');
+  api.use('jcbernack:reactive-aggregate@0.6.0');
   api.use('jquery');
   api.use('meteor-base');
   api.mainModule('server/main.js','server');
