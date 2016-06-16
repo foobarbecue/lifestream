@@ -17,6 +17,6 @@ Package.onUse(function(api) {
   api.use('jcbernack:reactive-aggregate@0.6.0');
   api.use('mongo');
   api.use('templating');
-  api.use('d3js:d3@3.5.5','client');
+  api.use('d3js:d3@3.5.16','client');
   api.mainModule('main.js','client');
 });

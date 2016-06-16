@@ -25,6 +25,7 @@ var drawLifestream = function(){
             .filter((d)=>d.timestamp_end)
             .attr({r: 4, cx:10, cy:(d)=>tscale(d.timestamp_end)});
         d3.selectAll('g.axis').call(ax);
+        d3.selectAll('.tick text').attr('transform','rotate(-90)')
     };
 
     /**
@@ -41,7 +42,7 @@ var drawLifestream = function(){
             .append("rect")
             .attr({y:-1000, width:100, height:850});
 
-        // Draw lifestream events that have no duration
+        // Draw lifestream events
         let newEvts = d3.select('svg.lifestream')
             .attr("viewBox","0 -1000 100 1000")
             .attr("preserveAspectRatio","xMaxYMin")
@@ -49,7 +50,7 @@ var drawLifestream = function(){
             .data(eventData,(d)=>d._id) //use service as the key for data join
             .enter()
             .append("g")
-            .attr("transform", (d, i)=>`translate(${i * 10},0)`)
+            .attr("transform", (d, i)=>`translate(${4+ i * 10},0)`)
             .attr("class", "lane")
             .selectAll("circle")
             .data((d)=>d.items) // d is eventData[i]
@@ -66,14 +67,15 @@ var drawLifestream = function(){
             .append("line") // TODO should only be adding for events that have timestamp_end
             .attr({
                 "class":"duration",
-                "display":"none",
+                "display":"none", // This is a hack... later we display only the ones with timestamp_end
                 "clip-path":"url(#lstrm-clip)"
             });
 
         newEvts
             .append("circle")
             .attr({
-                "class":"lifestreamEvtEnd"
+                "class":"lifestreamEvtEnd",
+                "clip-path":"url(#lstrm-clip)"
             });
 
         // Draw the time axis (y)
