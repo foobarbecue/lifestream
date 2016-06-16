@@ -110,7 +110,7 @@ var drawLifestream = function(){
 
         // Mouseovers setup
         let tooltipEl = d3.select("div.ttp");
-        d3.selectAll(".lifestreamEvt")
+        d3.selectAll(".lifestreamEvt, .lifestreamEvtEnd, .duration")
             .on("mouseenter",
                 function(d){
                     tooltipEl.html(d.summaryHTML);
