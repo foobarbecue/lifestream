@@ -22,3 +22,7 @@
       border: thin black solid;
       background: lightgrey;
     }
+    circle{
+        fill: none;
+        stroke: black;
+    }

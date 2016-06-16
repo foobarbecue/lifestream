@@ -21,6 +21,9 @@ var drawLifestream = function(){
                 x2:10,
                 y2:(d)=>tscale(d.timestamp_end)})
             .attr("display","block");
+        d3.selectAll('circle.lifestreamEvtEnd')
+            .filter((d)=>d.timestamp_end)
+            .attr({r: 4, cx:10, cy:(d)=>tscale(d.timestamp_end)});
         d3.selectAll('g.axis').call(ax);
     };
 
@@ -51,7 +54,6 @@ var drawLifestream = function(){
             .selectAll("circle")
             .data((d)=>d.items) // d is eventData[i]
             .enter();
-
         newEvts
             .append("circle")
             .attr("class","lifestreamEvt")
@@ -59,6 +61,7 @@ var drawLifestream = function(){
             .attr("r", 4)
             .attr("cx", 10); //TODO what's with this? Seems like it should be 0.
 
+        // Add extra stuff for events that have an end timestamp
         newEvts
             .append("line") // TODO should only be adding for events that have timestamp_end
             .attr({
@@ -66,6 +69,13 @@ var drawLifestream = function(){
                 "display":"none",
                 "clip-path":"url(#lstrm-clip)"
             });
+
+        newEvts
+            .append("circle")
+            .attr({
+                "class":"lifestreamEvtEnd"
+            });
+
         // Draw the time axis (y)
         d3.selectAll('svg.lifestream')
             .selectAll('g.axis')
