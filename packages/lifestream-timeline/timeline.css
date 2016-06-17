@@ -29,5 +29,5 @@
     g.axis text{
         font-size: x-small;
         text-transform: uppercase;
-        alignment-baseline: central;
+        alignment-baseline: mathematical;
     }

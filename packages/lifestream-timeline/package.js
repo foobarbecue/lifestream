@@ -1,6 +1,6 @@
 Package.describe({
   name: 'foobarbecue:lifestream-timeline',
-  version: '0.0.5',
+  version: '0.0.6',
   // Brief, one-line summary of the package.
   summary: 'A blaze timeline widget designed for use with foobarbecue:lifestream-server',
   // URL to the Git repository containing the source code for this package.
@@ -17,6 +17,6 @@ Package.onUse(function(api) {
   api.use('jcbernack:reactive-aggregate@0.6.0');
   api.use('mongo');
   api.use('templating');
-  api.use('d3js:d3@3.5.16','client');
+  api.use('d3js:d3@3.5.8','client');
   api.mainModule('main.js','client');
 });

@@ -4,6 +4,7 @@
 import getYoutube from './youtube.js';
 import getGithub from './github.js';
 import getStackexchange from './stackexchange.js';
+import getMeteorBlog from './meteorblog.js';
 import './publications.js';
 const config = Meteor.settings.lifestream;
 
@@ -11,7 +12,8 @@ const config = Meteor.settings.lifestream;
 Meteor.methods({
     get_youtube: getYoutube,
     get_github: getGithub,
-    get_stackexchange: getStackexchange
+    get_stackexchange: getStackexchange,
+    get_meteorblog: getMeteorBlog
 });
 
 SyncedCron.add({
