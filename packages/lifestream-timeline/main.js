@@ -169,11 +169,11 @@ class LifestreamTimeline {
     }
 }
 
-Template.lifestream_timeline.onCreated(()=>{window.lifestream_timeline = new LifestreamTimeline()});
+Template.lifestream_timeline.onCreated(()=>{this.lifestream_timeline = new LifestreamTimeline()});
 Template.registerHelper('drawLifestream',
-    ()=>{window.lifestream_timeline.render(Lifestreams.find().fetch());
-        window.lifestream_timeline.updateAxes()}
+    ()=>{this.lifestream_timeline.render(Lifestreams.find().fetch());
+        this.lifestream_timeline.updateAxes()}
 );
-Template.registerHelper('setLifestreamDates',
-    (start, end)=>{window.lifestream_timeline.set_dates(start, end)}
-);
+// Template.registerHelper('setLifestreamDates',
+//     (start, end)=>{window.lifestream_timeline.set_dates(start, end)}
+// );
