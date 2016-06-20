@@ -149,8 +149,11 @@ class LifestreamTimeline {
 
     }
 
-    updateAxes(){
+    updateAxes(start_end_times){
         let self = this;
+        if (!!start_end_times){
+            self.tscale.domain(start_end_times);
+        };
         d3.selectAll('circle.lifestreamEvt')
             .attr("cy", (d)=>self.tscale(d.timestamp));
         d3.selectAll('line.duration')
@@ -169,11 +172,16 @@ class LifestreamTimeline {
     }
 }
 
-Template.lifestream_timeline.onCreated(()=>{this.lifestream_timeline = new LifestreamTimeline()});
-Template.registerHelper('drawLifestream',
-    ()=>{this.lifestream_timeline.render(Lifestreams.find().fetch());
-        this.lifestream_timeline.updateAxes()}
+Template.lifestream_timeline.onCreated(
+    function(){
+        console.log(this);
+        this.timeline = new LifestreamTimeline();
+    }
 );
-// Template.registerHelper('setLifestreamDates',
-//     (start, end)=>{window.lifestream_timeline.set_dates(start, end)}
-// );
+Template.registerHelper('drawLifestream',
+    function(){
+        let self = Template.instance();
+        self.timeline.render(Lifestreams.find().fetch());
+        self.timeline.updateAxes();
+    }
+);
