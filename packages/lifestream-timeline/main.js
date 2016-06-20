@@ -20,28 +20,6 @@ class LifestreamTimeline {
         this.ax = d3.svg.axis()
             .scale(this.tscale)
             .orient("right");
-
-        // Show the axis when mouse goes over the lifestream
-        try {
-            if (!!Meteor.settings.public.lifestream.timeline_axisfade) {
-                d3.select('svg.lifestream')
-                    .on("mouseenter",
-                        function () {
-                            $(".axis").fadeIn()
-                        });
-                d3.select('svg.lifestream')
-                    .on("mouseleave",
-                        function () {
-                            $(".axis").hide();
-                            d3.select("div.ttp").transition().delay(500).style('display', 'none');
-                        });
-            }
-        }
-        catch (error){
-            if (error.name !== 'TypeError'){
-                throw error
-            }
-        };
     }
     render(eventDataCursor) {        // Add clip-path to hide events that are outside of axes
         let self = this;
@@ -174,7 +152,6 @@ class LifestreamTimeline {
 
 Template.lifestream_timeline.onCreated(
     function(){
-        console.log(this);
         this.timeline = new LifestreamTimeline();
     }
 );
