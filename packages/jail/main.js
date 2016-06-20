@@ -1,49 +1,38 @@
 /**
- * Created by aaron on 6/19/16.
+ * Created by aaron on 6/6/16.
  */
-    //Import d3
 import { Template } from 'meteor/templating';
 import './timeline.css';
 import './timeline.html';
 Lifestreams = new Mongo.Collection('lifestreams');
 Meteor.subscribe("lifestreams");
+var drawLifestream = function(){
+    /**
+     * Runs on first render and then on zoom / pan events
+     */
+    var updateAxes = function(){
+        d3.selectAll('circle.lifestreamEvt')
+            .attr("cy", (d)=>tscale(d.timestamp));
+        d3.selectAll('line.duration')
+            .filter((d)=>!!d.timestamp_end)
+            .attr({
+                x1:10,
+                y1:(d)=>tscale(d.timestamp),
+                x2:10,
+                y2:(d)=>tscale(d.timestamp_end)})
+            .attr("display","block");
+        d3.selectAll('circle.lifestreamEvtEnd')
+            .filter((d)=>d.timestamp_end)
+            .attr({r: 4, cx:10, cy:(d)=>tscale(d.timestamp_end)});
+        d3.selectAll('g.axis').call(ax);
+        d3.selectAll('.tick text').attr('transform','rotate(-90)')
+    };
 
-class LifestreamTimeline {
-    constructor(){
-        // Scales etc. setup
-        this.endDate = new Date();
-        this.startDate= new Date();
-        this.startDate.setMonth(this.endDate.getMonth() - 1);
-        this.tscale = d3.time.scale()
-            .range([-150, -1000])
-            .domain([this.startDate, this.endDate]);
-        this.ax = d3.svg.axis()
-            .scale(this.tscale)
-            .orient("right");
-
-        // Show the axis when mouse goes over the lifestream
-        try {
-            if (!!Meteor.settings.public.lifestream.timeline_axisfade) {
-                d3.select('svg.lifestream')
-                    .on("mouseenter",
-                        function () {
-                            $(".axis").fadeIn()
-                        });
-                d3.select('svg.lifestream')
-                    .on("mouseleave",
-                        function () {
-                            $(".axis").hide();
-                            d3.select("div.ttp").transition().delay(500).style('display', 'none');
-                        });
-            }
-        }
-        catch (error){
-            if (error.name !== 'TypeError'){
-                throw error
-            }
-        };
-    }
-    render(eventDataCursor){        // Add clip-path to hide events that are outside of axes
+    /**
+     * Only runs when new data becomes available
+     */
+    var render = function(){
+        // Add clip-path to hide events that are outside of axes
         d3.selectAll('svg.lifestream')
             .selectAll('clipPath')
             .data([1]) //Makes sure there will always be exactly one
@@ -58,7 +47,7 @@ class LifestreamTimeline {
             .attr("viewBox","0 -1000 100 1000")
             .attr("preserveAspectRatio","xMaxYMin")
             .selectAll("g.lane")
-            .data(eventDataCursor.fetch(),(d)=>d._id) //use service as the key for data join
+            .data(eventData,(d)=>d._id) //use service as the key for data join
             .enter()
             .append("g")
             .attr("transform", (d, i)=>`translate(${4+ i * 10},0)`)
@@ -140,38 +129,51 @@ class LifestreamTimeline {
                 tooltipEl.style('display','none');
                 tooltipEl.html('');
             });
-        this.panZoom = d3.behavior.zoom()
-            .y(this.tscale)
-            .on("zoom", this.updateAxes);
-        d3.select('svg.lifestream')
-            .call(this.panZoom);
 
-    }
-    updateAxes(){
-        let self = this;
-        d3.selectAll('circle.lifestreamEvt')
-            .attr("cy", (d)=>self.tscale(d.timestamp));
-        d3.selectAll('line.duration')
-            .filter((d)=>!!d.timestamp_end)
-            .attr({
-                x1:10,
-                y1:(d)=>self.tscale(d.timestamp),
-                x2:10,
-                y2:(d)=>self.tscale(d.timestamp_end)})
-            .attr("display","block");
-        d3.selectAll('circle.lifestreamEvtEnd')
-            .filter((d)=>d.timestamp_end)
-            .attr({r: 4, cx:10, cy:(d)=>self.tscale(d.timestamp_end)});
-        d3.selectAll('g.axis').call(self.ax);
-        d3.selectAll('.tick text').attr('transform','rotate(-90)')
-    }
-}
 
-Template.lifestream_timeline.onCreated(()=>{window.lifestream_timeline = new LifestreamTimeline()});
-Template.registerHelper('drawLifestream',
-    ()=>{window.lifestream_timeline.render(Lifestreams.find());
-        window.lifestream_timeline.updateAxes()}
-);
-Template.registerHelper('setLifestreamDates',
-    (start, end)=>{window.lifestream_timeline.set_dates(start, end)}
-);
+    };
+    // Scales etc. setup
+    const endDate = new Date();
+    let startDate = new Date();
+    startDate.setMonth(endDate.getMonth() - 1);
+    let eventData = Lifestreams.find().fetch();
+    let tscale = d3.time.scale()
+        .range([-150, -1000])
+        .domain([startDate, endDate]);
+    let ax = d3.svg.axis()
+        .scale(tscale)
+        .orient("right");
+    let panZoom = d3.behavior.zoom()
+        .y(tscale)
+        .on("zoom", updateAxes);
+
+    d3.select('svg.lifestream')
+        .call(panZoom);
+
+    // Show the axis when mouse goes over the lifestream
+    try {
+        if (!!Meteor.settings.public.lifestream.timeline_axisfade) {
+            d3.select('svg.lifestream')
+                .on("mouseenter",
+                    function () {
+                        $(".axis").fadeIn()
+                    });
+            d3.select('svg.lifestream')
+                .on("mouseleave",
+                    function () {
+                        $(".axis").hide();
+                        d3.select("div.ttp").transition().delay(500).style('display', 'none');
+                    });
+        }
+    }
+    catch (error){
+        if (error.name !== 'TypeError'){
+            throw error
+        }
+    };
+
+    render();
+    updateAxes();
+};
+
+Template.registerHelper('drawLifestream',drawLifestream);

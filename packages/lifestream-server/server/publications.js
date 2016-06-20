@@ -8,5 +8,4 @@ Meteor.publish("lifestreams", function(){
     ReactiveAggregate(this, Lifestreams, [{
         $group: {_id:"$service",items:{$push:"$$ROOT"}}
     }]);
-    // return Lifestreams.find();
 });
