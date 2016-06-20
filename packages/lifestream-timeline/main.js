@@ -43,7 +43,8 @@ class LifestreamTimeline {
             }
         };
     }
-    render(eventDataCursor){        // Add clip-path to hide events that are outside of axes
+    render(eventDataCursor) {        // Add clip-path to hide events that are outside of axes
+        let self = this;
         d3.selectAll('svg.lifestream')
             .selectAll('clipPath')
             .data([1]) //Makes sure there will always be exactly one
@@ -58,10 +59,10 @@ class LifestreamTimeline {
             .attr("viewBox","0 -1000 100 1000")
             .attr("preserveAspectRatio","xMaxYMin")
             .selectAll("g.lane")
-            .data(eventDataCursor.fetch(),(d)=>d._id) //use service as the key for data join
+            .data(eventDataCursor, (d)=>d._id) //use service as the key for data join
             .enter()
             .append("g")
-            .attr("transform", (d, i)=>`translate(${4+ i * 10},0)`)
+            .attr("transform", (d, i)=>`translate(${4 + i * 10},0)`)
             .attr("class", "lane")
             .selectAll("circle")
             .data((d)=>d.items) // d is eventData[i]
@@ -141,12 +142,13 @@ class LifestreamTimeline {
                 tooltipEl.html('');
             });
         this.panZoom = d3.behavior.zoom()
-            .y(this.tscale)
-            .on("zoom", this.updateAxes);
-        d3.select('svg.lifestream')
-            .call(this.panZoom);
+            .y(self.tscale)
+            .on("zoom", ()=>this.updateAxes()); // Use => to preserve the "this" context
+        this.panZoom(d3.select('svg.lifestream'));
+
 
     }
+
     updateAxes(){
         let self = this;
         d3.selectAll('circle.lifestreamEvt')
@@ -169,7 +171,7 @@ class LifestreamTimeline {
 
 Template.lifestream_timeline.onCreated(()=>{window.lifestream_timeline = new LifestreamTimeline()});
 Template.registerHelper('drawLifestream',
-    ()=>{window.lifestream_timeline.render(Lifestreams.find());
+    ()=>{window.lifestream_timeline.render(Lifestreams.find().fetch());
         window.lifestream_timeline.updateAxes()}
 );
 Template.registerHelper('setLifestreamDates',
