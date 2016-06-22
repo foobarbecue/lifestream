@@ -21,6 +21,7 @@
     div.ttp{
       border: thin black solid;
       background: lightgrey;
+      display: none;
     }
     circle{
         fill: none;
