@@ -11,7 +11,9 @@ const getMeteorBlog = function() {
         item['service'] = config.service_name;
         item['summaryHTML'] = `Created entry: <a href=/entry/${item.slug}>${item.title}</a>`;
         item['timestamp'] = new Date(item.createdAt);
-        Lifestreams.upsert({orig_id: item._id}, item);
+        item.orig_id = item._id;
+        delete item._id; //We don't want the meteor blog id becoming the id of the lifestream event for it
+        Lifestreams.upsert({orig_id: item.orig_id}, item);
     };
 };
 

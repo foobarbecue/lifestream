@@ -50,7 +50,8 @@ class LifestreamTimeline {
             .attr("class","lifestreamEvt")
             .attr("clip-path","url(#lstrm-clip)")
             .attr("r", 4)
-            .attr("cx", 10); //TODO what's with this? Seems like it should be 0.
+            .attr("cx", 10) //TODO what's with this? Seems like it should be 0.
+
 
         // Add extra stuff for events that have an end timestamp
         newEvts
@@ -148,6 +149,26 @@ class LifestreamTimeline {
         d3.selectAll('g.axis').call(self.ax);
         d3.selectAll('.tick text').attr('transform','rotate(-90)')
     }
+    updateSelectionDisplay(){
+        d3.selectAll('circle.lifestreamEvt')
+        .attr("style",(d)=>{
+            return (Session.get('lstrm-selected') == d.orig_id)
+                ? "stroke: red; fill: red"
+                : "stroke: black; fill: black"
+                })
+        let timestamp = d3
+            .selectAll('circle.lifestreamEvt')
+            .filter((d)=>d.orig_id==Session.get('lstrm-selected'))
+            .data()[0]
+            .timestamp;
+        if (timestamp) {
+            let weekBefore = new Date(timestamp).setDate(timestamp.getDate() - 5);
+            let weekAfter = new Date(timestamp).setDate(timestamp.getDate() + 5);
+            console.log(timestamp);
+            console.log([new Date(weekBefore), new Date(weekAfter)]);
+            this.updateAxes([new Date(weekBefore), new Date(weekAfter)]);
+        }
+    }
 }
 
 Template.lifestream_timeline.onCreated(
@@ -160,5 +181,7 @@ Template.registerHelper('drawLifestream',
         let self = Template.instance();
         self.timeline.render(Lifestreams.find().fetch());
         self.timeline.updateAxes();
+        self.timeline.updateSelectionDisplay();
+        Session.get('lstrm-selected');
     }
 );
