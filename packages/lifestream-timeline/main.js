@@ -150,23 +150,24 @@ class LifestreamTimeline {
         d3.selectAll('.tick text').attr('transform','rotate(-90)')
     }
     updateSelectionDisplay(){
-        d3.selectAll('circle.lifestreamEvt')
-        .attr("style",(d)=>{
-            return (Session.get('lstrm-selected') == d.orig_id)
-                ? "stroke: red; fill: red"
-                : "stroke: black; fill: black"
-                })
-        let timestamp = d3
-            .selectAll('circle.lifestreamEvt')
-            .filter((d)=>d.orig_id==Session.get('lstrm-selected'))
-            .data()[0]
-            .timestamp;
-        if (timestamp) {
-            let weekBefore = new Date(timestamp).setDate(timestamp.getDate() - 5);
-            let weekAfter = new Date(timestamp).setDate(timestamp.getDate() + 5);
-            console.log(timestamp);
-            console.log([new Date(weekBefore), new Date(weekAfter)]);
-            this.updateAxes([new Date(weekBefore), new Date(weekAfter)]);
+        let selected = Session.get('lstrm-selected');
+        if (selected) {
+            d3.selectAll('circle.lifestreamEvt')
+                .attr("style", (d)=> {
+                    return (selected == d.orig_id)
+                        ? "stroke: red; fill: red"
+                        : "stroke: black; fill: black"
+                });
+            let timestamp = d3
+                .selectAll('circle.lifestreamEvt')
+                .filter((d)=>d.orig_id == Session.get('lstrm-selected'))
+                .data()[0]
+                .timestamp;
+            if (timestamp) {
+                let weekBefore = new Date(timestamp).setDate(timestamp.getDate() - 5);
+                let weekAfter = new Date(timestamp).setDate(timestamp.getDate() + 5);
+                this.updateAxes([new Date(weekBefore), new Date(weekAfter)]);
+            }
         }
     }
 }
