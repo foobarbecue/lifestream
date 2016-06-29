@@ -117,7 +117,7 @@ class LifestreamTimeline {
                 tooltipEl.style('display','block')
             })
             .on("mouseleave", function(){
-                tooltipEl.style('display','none');
+                // tooltipEl.style('display','none');
                 tooltipEl.html('');
             });
         this.panZoom = d3.behavior.zoom()
@@ -134,6 +134,7 @@ class LifestreamTimeline {
             self.tscale.domain(start_end_times);
         };
         d3.selectAll('circle.lifestreamEvt')
+            .transition()
             .attr("cy", (d)=>self.tscale(d.timestamp));
         d3.selectAll('line.duration')
             .filter((d)=>!!d.timestamp_end)
@@ -146,12 +147,20 @@ class LifestreamTimeline {
         d3.selectAll('circle.lifestreamEvtEnd')
             .filter((d)=>d.timestamp_end)
             .attr({r: 4, cx:10, cy:(d)=>self.tscale(d.timestamp_end)});
-        d3.selectAll('g.axis').call(self.ax);
+        d3.selectAll('g.axis')
+            .style("display","block")
+            .transition()
+            .call(self.ax)
+            .style("opacity", ()=>self.axis_visible ? "1" : "0");
+        d3.selectAll("g.lane text").transition().style("opacity", ()=>self.axis_visible ? "1" : "0");
         d3.selectAll('.tick text').attr('transform','rotate(-90)')
     }
     updateSelectionDisplay(){
+        let self = this;
         let selected = Session.get('lstrm-selected');
+        console.log(selected);
         if (selected) {
+            self.axis_visible=true;
             d3.selectAll('circle.lifestreamEvt')
                 .attr("style", (d)=> {
                     return (selected == d.orig_id)
@@ -168,6 +177,9 @@ class LifestreamTimeline {
                 let weekAfter = new Date(timestamp).setDate(timestamp.getDate() + 5);
                 this.updateAxes([new Date(weekBefore), new Date(weekAfter)]);
             }
+        } else {
+            self.axis_visible=false;
+            this.updateAxes();
         }
     }
 }
