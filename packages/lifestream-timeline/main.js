@@ -195,6 +195,18 @@ Template.registerHelper('drawLifestream',
         self.timeline.render(Lifestreams.find().fetch());
         self.timeline.updateAxes();
         self.timeline.updateSelectionDisplay();
-        Session.get('lstrm-selected');
     }
 );
+
+Template.lifestream_timeline.events({
+    'mouseover': function(){
+        let self = Template.instance();
+        self.timeline.axis_visible=true;
+        self.timeline.updateAxes();
+    },
+    'mouseleave': function(){
+        let self = Template.instance();
+        self.timeline.axis_visible=false;
+        self.timeline.updateAxes();
+    }
+})
