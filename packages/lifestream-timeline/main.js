@@ -158,15 +158,14 @@ class LifestreamTimeline {
     updateSelectionDisplay(){
         let self = this;
         let selected = Session.get('lstrm-selected');
-        console.log(selected);
+        d3.selectAll('circle.lifestreamEvt')
+            .attr("style", (d)=> {
+                return (d.orig_id && selected == d.orig_id)
+                    ? "stroke: red; fill: red"
+                    : "stroke: black; fill: black"
+            });
         if (selected) {
             self.axis_visible=true;
-            d3.selectAll('circle.lifestreamEvt')
-                .attr("style", (d)=> {
-                    return (selected == d.orig_id)
-                        ? "stroke: red; fill: red"
-                        : "stroke: black; fill: black"
-                });
             let timestamp = d3
                 .selectAll('circle.lifestreamEvt')
                 .filter((d)=>d.orig_id == Session.get('lstrm-selected'))
