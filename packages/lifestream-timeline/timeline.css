@@ -20,10 +20,6 @@
       background: lightgrey;
       display: none;
     }
-    circle{
-        fill: none;
-        stroke: black;
-    }
     g.axis text{
         font-size: x-small;
         text-transform: uppercase;

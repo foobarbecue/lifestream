@@ -1,6 +1,6 @@
 Package.describe({
   name: 'foobarbecue:lifestream-server',
-  version: '0.1.10',
+  version: '0.1.11',
   // Brief, one-line summary of the package.
   summary: 'Collect and publish streams of online activity from social APIs',
   // URL to the Git repository containing the source code for this package.
