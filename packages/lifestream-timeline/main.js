@@ -40,7 +40,7 @@ class LifestreamTimeline {
             .data(eventDataCursor, (d)=>d._id) //use service as the key for data join
             .enter()
             .append("g")
-            .attr("transform", (d, i)=>`translate(${4 + i * 10},0)`)
+            .attr("transform", (d, i)=>`translate(${85 - i * 10},0)`)
             .attr("class", "lane")
             .selectAll("circle")
             .data((d)=>d.items) // d is eventData[i]
@@ -147,8 +147,10 @@ class LifestreamTimeline {
         d3.selectAll('circle.lifestreamEvtEnd')
             .filter((d)=>d.timestamp_end)
             .attr({r: 4, cx:10, cy:(d)=>self.tscale(d.timestamp_end)});
+        let num_lanes = d3.selectAll("g.lane")[0].length
         d3.selectAll('g.axis')
             .style("display","block")
+            .attr("transform",`translate(${85 - num_lanes*10})`)
             .transition()
             .call(self.ax)
             .style("opacity", ()=>self.axis_visible ? "1" : "0");
