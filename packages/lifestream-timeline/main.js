@@ -16,7 +16,7 @@ class LifestreamTimeline {
         this.startDate= new Date();
         this.startDate.setMonth(this.endDate.getMonth() - 1);
         this.tscale = d3.time.scale()
-            .range([this.height-150, 0])
+            .range([this.height-250, -1000])
             .domain([this.startDate, this.endDate]);
         this.ax = d3.svg.axis()
             .scale(this.tscale)
@@ -31,7 +31,7 @@ class LifestreamTimeline {
             .append("clipPath")
             .attr('id',"lstrm-clip")
             .append("rect")
-            .attr({y:0, width:100, height:this.height-150});
+            .attr({y:0, width:100, height:self.height-250});
 
         // Draw lifestream events
         let newEvts = d3.select('svg.lifestream')
@@ -85,7 +85,7 @@ class LifestreamTimeline {
             .append("text")
             .text((d)=>d._id)
             .attr("text-anchor","end")
-            .attr("transform",`translate(14,${self.height-150})rotate(-90)`)
+            .attr("transform",`translate(14,${self.height-245})rotate(-90)`)
             .attr("class","axis")
             .style("font-variant","small-caps");
 
