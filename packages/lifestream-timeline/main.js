@@ -11,11 +11,12 @@ Meteor.subscribe("lifestreams");
 class LifestreamTimeline {
     constructor(){
         // Scales etc. setup
+        this.height = $(document).height();
         this.endDate = new Date();
         this.startDate= new Date();
         this.startDate.setMonth(this.endDate.getMonth() - 1);
         this.tscale = d3.time.scale()
-            .range([-150, -1000])
+            .range([this.height-150, 0])
             .domain([this.startDate, this.endDate]);
         this.ax = d3.svg.axis()
             .scale(this.tscale)
@@ -30,12 +31,11 @@ class LifestreamTimeline {
             .append("clipPath")
             .attr('id',"lstrm-clip")
             .append("rect")
-            .attr({y:-1000, width:100, height:850});
+            .attr({y:0, width:100, height:this.height-150});
 
         // Draw lifestream events
         let newEvts = d3.select('svg.lifestream')
-            .attr("viewBox","0 -1000 100 1000")
-            .attr("preserveAspectRatio","xMaxYMin")
+            .attr("preserveAspectRatio","none")
             .selectAll("g.lane")
             .data(eventDataCursor, (d)=>d._id) //use service as the key for data join
             .enter()
@@ -85,7 +85,7 @@ class LifestreamTimeline {
             .append("text")
             .text((d)=>d._id)
             .attr("text-anchor","end")
-            .attr("transform","translate(14,-145)rotate(-90)")
+            .attr("transform",`translate(14,${self.height-150})rotate(-90)`)
             .attr("class","axis")
             .style("font-variant","small-caps");
 
