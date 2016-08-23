@@ -22,6 +22,23 @@ class LifestreamTimeline {
             .scale(this.tscale)
             .orient("right");
     }
+    resize(){
+        let self = this;
+        this.height = $(document).height();
+        this.tscale = d3.time.scale()
+            .range([this.height-250, -1000])
+            .domain([this.startDate, this.endDate]);
+        this.ax = d3.svg.axis()
+            .scale(this.tscale)
+            .orient("right");
+        // mask
+        
+        
+        // service labels
+        d3.selectAll('g.lane')
+            .selectAll("text")
+            .attr("transform",`translate(14,${self.height-245})rotate(-90)`);
+    }
     render(eventDataCursor) {        // Add clip-path to hide events that are outside of axes
         let self = this;
         d3.selectAll('svg.lifestream')
@@ -183,19 +200,30 @@ class LifestreamTimeline {
             this.updateAxes();
         }
     }
+    destroy(){
+        d3.selectAll('svg.lifestream').remove()
+    }
 }
 
 Template.lifestream_timeline.onCreated(
     function(){
         this.timeline = new LifestreamTimeline();
+        console.log(this.timeline);
     }
 );
 Template.registerHelper('drawLifestream',
     function(){
         let self = Template.instance();
-        self.timeline.render(Lifestreams.find().fetch());
+        let tldata = Lifestreams.find().fetch()
+        self.timeline.render(tldata);
         self.timeline.updateAxes();
         self.timeline.updateSelectionDisplay();
+        console.log(self);
+        $(window).resize(function(){
+            self.timeline.resize();
+            self.timeline.render(tldata);
+            self.timeline.updateAxes();
+        });
     }
 );
 
