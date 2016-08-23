@@ -16,7 +16,7 @@ class LifestreamTimeline {
         this.startDate= new Date();
         this.startDate.setMonth(this.endDate.getMonth() - 1);
         this.tscale = d3.time.scale()
-            .range([this.height-250, -1000])
+            .range([this.height-250, 0])
             .domain([this.startDate, this.endDate]);
         this.ax = d3.svg.axis()
             .scale(this.tscale)
@@ -26,7 +26,7 @@ class LifestreamTimeline {
         let self = this;
         this.height = $(document).height();
         this.tscale = d3.time.scale()
-            .range([this.height-250, -1000])
+            .range([this.height-250, 0]) //TODO hard-coded values duplicated from constructor :-(
             .domain([this.startDate, this.endDate]);
         this.ax = d3.svg.axis()
             .scale(this.tscale)
