@@ -32,7 +32,7 @@ class LifestreamTimeline {
             .scale(this.tscale)
             .orient("right");
         // mask
-        
+        d3.selectAll('#lstrm-clip rect').attr({y:0, width:100, height:self.height-250});
         
         // service labels
         d3.selectAll('g.lane')
